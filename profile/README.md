@@ -16,8 +16,8 @@ Vi er spesialister på **.NET** og fullstack-utvikling, men det stopper ikke der
 
 Vi er stolte over å samarbeide med ledende norske virksomheter:
 
-- [Reitan Convenience Norway](https://novanet.no/referanser/reitan-convenience-norway/) – Ny varemaster for effektiv varehåndtering
-- [Huddly](https://novanet.no/referanser/huddly/) – Kundeportal for AI-drevne konferansekameraer
+- [Thon Hotels](https://novanet.no/referanser/thon/) – Ny booking-app ga eventyrlig vekst for Thon Hotels
+- [Saint-Gobain](https://novanet.no/referanser/bd/) – Fremtidsrettet løsning med solid tjenesteplattform
 - [Nordic Corporate Bank](https://novanet.no/referanser/ncb/) – Tverrfaglig samarbeid for prosessforbedring
 
 ### 📝 Fra bloggen
