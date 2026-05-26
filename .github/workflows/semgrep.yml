@@ -1,0 +1,46 @@
+name: "Semgrep SAST"
+
+on:
+  workflow_call:
+    inputs:
+      event_name:
+        required: true
+        type: string
+
+jobs:
+  semgrep:
+    name: Static Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Install Semgrep
+        run: pip install semgrep
+
+      - name: Run Semgrep
+        run: |
+          if [ "${{ inputs.event_name }}" = "pull_request" ]; then
+            semgrep scan --config auto --sarif --output semgrep.sarif --error --baseline-commit origin/main
+          else
+            semgrep scan --config auto --sarif --output semgrep.sarif
+          fi
+        env:
+          SEMGREP_TIMEOUT: "300"
+
+      - name: Print findings
+        if: always()
+        run: |
+          if [ -f semgrep.sarif ]; then
+            jq -r '.runs[0].results[] | "[\(.ruleId)] \(.locations[0].physicalLocation.artifactLocation.uri):\(.locations[0].physicalLocation.region.startLine)\n  \(.message.text)\n"' semgrep.sarif
+          fi
+
+      - name: Upload SARIF results
+        if: always()
+        continue-on-error: true
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: semgrep.sarif
