@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Install Semgrep
         run: pip install semgrep
@@ -24,6 +26,7 @@ jobs:
       - name: Run Semgrep
         run: |
           if [ "${{ inputs.event_name }}" = "pull_request" ]; then
+            git fetch --no-tags origin +refs/heads/main:refs/remotes/origin/main
             semgrep scan --config auto --sarif --output semgrep.sarif --error --baseline-commit origin/main
           else
             semgrep scan --config auto --sarif --output semgrep.sarif
