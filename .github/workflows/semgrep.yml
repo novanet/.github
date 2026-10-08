@@ -25,11 +25,13 @@ jobs:
 
       - name: Run Semgrep
         run: |
+          # We reference actions by readable version tags (e.g. actions/checkout@v6), not commit SHAs.
+          EXCLUDE="--exclude-rule yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag"
           if [ "${{ inputs.event_name }}" = "pull_request" ]; then
             git fetch --no-tags origin +refs/heads/main:refs/remotes/origin/main
-            semgrep scan --config auto --sarif --output semgrep.sarif --error --baseline-commit origin/main
+            semgrep scan --config auto $EXCLUDE --sarif --output semgrep.sarif --error --baseline-commit origin/main
           else
-            semgrep scan --config auto --sarif --output semgrep.sarif
+            semgrep scan --config auto $EXCLUDE --sarif --output semgrep.sarif
           fi
         env:
           SEMGREP_TIMEOUT: "300"
